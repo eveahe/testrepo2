@@ -7,11 +7,12 @@ navLinks.innerHTML = markup;
 //This creates the reference to the logo.
 const logo = document.querySelector('.logo');
 //Now we are adding the show menu class on click.
-logo.addEventListener('click', function (){
+logo.addEventListener('click', toggleMenu());
+
+function toggleMenu(){
   document.body.classList.toggle('showmenu');
   event.preventDefault();
-})
-
+}
 
 
 // sticky nav
@@ -54,6 +55,7 @@ window.onhashchange = function() {
     navItem => navItem.link == newloc
   )
   renderPage(newContent);
+  toggleMenu();
   //The below scrolls to the top once you change the navigation.
   window.scrollTo(0,0);
 }
