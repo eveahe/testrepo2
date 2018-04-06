@@ -4,9 +4,15 @@ const navLinks = nav.querySelector('#nav-links');
 const markup = `${navItems.map(listItem => `<li><a href="${listItem.link}">${listItem.label}</a></li>`).join('')}`;
 navLinks.innerHTML = markup;
 
-// const logo = document.querySelector('#main ul li');
-// logo.classList.add('logo');
-// logo.firstChild.innerHTML = '<img src="img/logo.svg" />';
+//This creates the reference to the logo.
+const logo = document.querySelector('.logo');
+//Now we are adding the show menu class on click.
+logo.addEventListener('click', function (){
+  document.body.classList.toggle('showmenu');
+  event.preventDefault();
+})
+
+
 
 // sticky nav
 let topOfNav = nav.offsetTop;
@@ -26,14 +32,35 @@ function fixNav() {
 // hashes
 const siteWrap = document.querySelector('.site-wrap');
 
+window.onload = function(){
+  let newContent;
+  //the first part below is someone is coming to the page for the first time.
+  //ie, window.location.hash will be null.
+  if(!window.location.hash){ 
+    newContent = navItems.filter(
+      navItem => navItem.link == '#watchlist'
+    )
+  } else {
+    newContent = navItems.filter(
+      navItem => navItem.link == window.location.hash
+    )
+  }
+  renderPage(newContent)
+}
+
 window.onhashchange = function() {
   let newloc = window.location.hash;
   let newContent = navItems.filter(
     navItem => navItem.link == newloc
   )
-  siteWrap.innerHTML = `
-    <h2>${newContent[0].header}</h2>
-    ${newContent[0].content}
-  `
+  renderPage(newContent);
+  //The below scrolls to the top once you change the navigation.
+  window.scrollTo(0,0);
 }
 
+function renderPage(newContent){
+  siteWrap.innerHTML = `
+  <h2>${newContent[0].header}</h2>
+  ${newContent[0].content}
+  `
+}
